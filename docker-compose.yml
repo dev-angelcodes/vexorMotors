@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  # ----------------------------------------------------------------
+  # 1. Base de Datos para INVENTARIO (PostgreSQL)
+  # ----------------------------------------------------------------
+  postgres-inventory:
+    image: postgres:15-alpine
+    container_name: vexor-postgres
+    environment:
+      - POSTGRES_USER=vexor
+      - POSTGRES_PASSWORD=vexor
+      - POSTGRES_DB=inventory_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - vexor-network
+
+  # ----------------------------------------------------------------
+  # 2. Base de Datos para VENTAS y AUTH (MySQL)
+  # ----------------------------------------------------------------
+  mysql-general:
+    image: mysql:8.0
+    container_name: vexor-mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=auth_db  # Base de datos por defecto
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/data/application/init.sql
+    command: --init-file /data/application/init.sql
+    networks:
+      - vexor-network
+
+  # ----------------------------------------------------------------
+  # 3. Message Broker (RabbitMQ) - Para comunicación asíncrona
+  # ----------------------------------------------------------------
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    container_name: vexor-rabbitmq
+    ports:
+      - "5672:5672"   # Puerto para los microservicios
+      - "15672:15672" # Panel de administración web (usuario: guest/guest)
+    networks:
+      - vexor-network
+
+  # ----------------------------------------------------------------
+  # 4. Distributed Tracing (Zipkin) - Para ver errores
+  # ----------------------------------------------------------------
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: vexor-zipkin
+    ports:
+      - "9411:9411"
+    networks:
+      - vexor-network
+
+volumes:
+  postgres_data:
+  mysql_data:
+
+networks:
+  vexor-network:
+    driver: bridge

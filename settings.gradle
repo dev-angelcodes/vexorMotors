@@ -1,1 +1,15 @@
 rootProject.name = 'vexorMotors'
+
+// Librería compartida
+include 'shared:shared-library'
+
+// Infraestructura
+include 'infrastructure:config-server'
+include 'infrastructure:discovery-server'
+include 'infrastructure:api-gateway'
+
+// Servicios de Negocio (Tal cual los tienes en la carpeta)
+include 'services:inventory-service'
+include 'services:sales-service'
+include 'services:auth-service'
+include 'services:chat-service'
