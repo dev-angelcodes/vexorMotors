@@ -1,1 +1,16 @@
-rootProject.name = 'vexorMotors'
+rootProject.name = "vexorMotors"
+
+include(
+        "apps:customer-API",
+        "apps:employee-API",
+
+        "modules:auth",
+        "modules:chat",
+        "modules:inventory",
+        "modules:sales",
+        "modules:search",
+
+        "shared:kernel",
+        "shared:common-infra",
+        "shared:persistence-base"
+)
