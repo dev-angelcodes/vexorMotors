@@ -1,39 +1,72 @@
-HELP.md
-.gradle
-build/
-!gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**/build/
-!**/src/test/**/build/
+############################################
+# OS
+############################################
 .DS_Store
 **/.DS_Store
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
+############################################
+# Gradle
+############################################
+.gradle/
+**/.gradle/
+build/
+**/build/
 
-### IntelliJ IDEA ###
-.idea
+############################################
+# Java / JVM
+############################################
+*.class
+*.log
+hs_err_pid*
+
+############################################
+# IDEs
+############################################
+
+# IntelliJ IDEA
+.idea/
 *.iws
 *.iml
 *.ipr
 out/
-!**/src/main/**/out/
-!**/src/test/**/out/
+**/out/
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
+# Eclipse / STS
+.classpath
+.project
+.settings/
+.factorypath
+.springBeans
+.sts4-cache/
+bin/
+**/bin/
 
-### VS Code ###
+# VS Code
 .vscode/
+
+# NetBeans
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+############################################
+# Docker
+############################################
+docker-data/
+*.env
+
+############################################
+# Spring Boot
+############################################
+target/
+logs/
+
+############################################
+# Misc
+############################################
+*.tmp
+*.swp
+*.bak
+*.orig
