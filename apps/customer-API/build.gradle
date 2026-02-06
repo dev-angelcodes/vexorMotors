@@ -12,6 +12,8 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-validation"
     implementation "org.springframework.boot:spring-boot-starter-security"
     implementation "org.springframework.boot:spring-boot-starter-actuator"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+
 
     // Driver en la App (el ejecutable)
     runtimeOnly "org.postgresql:postgresql"
