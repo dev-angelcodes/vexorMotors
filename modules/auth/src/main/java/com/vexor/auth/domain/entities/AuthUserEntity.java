@@ -2,10 +2,7 @@ package com.vexor.auth.domain.entities;
 
 import com.vexor.auth.domain.enums.UserRole;
 import com.vexor.persistencebase.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,17 +22,18 @@ import java.util.UUID;
 public class AuthUserEntity extends BaseEntity {
 
     @Column(nullable = false, length = 320)
-    private  String email;
+    private String email;
 
-    @Column(nullable = false, length = 100)
-    private String password;
+    @Column(name = "password_hash", nullable = false, length = 100)
+    private String passwordHash;
 
-    @Column(nullable = false, length = 100)
+    @Column(name = "first_name", nullable = false, length = 100)
     private String firstName;
 
-    @Column(nullable = false, length = 200)
+    @Column(name = "last_name",nullable = false, length = 200)
     private String lastName;
 
     @Column(nullable = false, length = 20)
+    @Enumerated(EnumType.STRING)
     private UserRole role;
 }

@@ -7,14 +7,18 @@ import com.vexor.auth.domain.entities.AuthUserEntity;
 import com.vexor.auth.domain.repository.AuthUserJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
+@Service
 @RequiredArgsConstructor
 public class UserManagementService implements UserManagementApi {
     private final AuthUserJpaRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
+    @Transactional
     public UserDto createUser(CreateUserCommand command) {
         var email = command.email().toLowerCase().trim();
 

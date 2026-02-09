@@ -1,0 +1,32 @@
+package com.vexor.commoninfra.jsonapi;
+
+public class JsonApiResponse<T> {
+    private T data;
+    private Object meta;
+
+    public JsonApiResponse(T data) {
+        this.data = data;
+    }
+
+    public JsonApiResponse(T data, Object meta) {
+        this.data = data;
+        this.meta = meta;
+    }
+
+    // Getters y setters
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
+
+    public Object getMeta() {
+        return meta;
+    }
+
+    public void setMeta(Object meta) {
+        this.meta = meta;
+    }
+}

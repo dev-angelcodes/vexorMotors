@@ -23,6 +23,10 @@ subprojects {
 		imports {
 			mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
 		}
+		// ✅ Fuerza versión segura para CVE-2025-48924 (transitiva)
+		dependencies {
+			dependency "org.apache.commons:commons-lang3:3.18.0"
+		}
 	}
 
 	plugins.withId("java") {
