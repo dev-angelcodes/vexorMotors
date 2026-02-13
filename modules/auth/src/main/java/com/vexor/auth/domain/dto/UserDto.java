@@ -3,6 +3,8 @@ package com.vexor.auth.domain.dto;
 
 import com.vexor.auth.domain.enums.UserRole;
 
+
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 public record UserDto(
@@ -10,5 +12,7 @@ public record UserDto(
         String email,
         String firstName,
         String lastName,
-        UserRole role
+        UserRole role,
+        ZonedDateTime created,
+        ZonedDateTime updated
 ) {}

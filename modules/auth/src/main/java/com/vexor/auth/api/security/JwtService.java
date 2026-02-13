@@ -1,6 +1,7 @@
 package com.vexor.auth.api.security;
 
 
+import com.vexor.auth.domain.record.ParsedJwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -26,21 +27,36 @@ public class JwtService {
         this.key = Keys.hmacShaKeyFor(props.secret().getBytes(StandardCharsets.UTF_8));
     }
 
-    public String generateToken(String subject, Collection<String> roles) {
+    public String generateAccessToken(String subject, Collection<String> roles) {
         var now = Instant.now();
-        var exp = now.plus(props.expirationMinutes(), ChronoUnit.MINUTES);
+        var expiration = now.plus(props.accessExpirationMinutes(), ChronoUnit.MINUTES);
 
         return Jwts.builder()
                 .issuer(props.issuer())
                 .subject(subject)
                 .issuedAt(Date.from(now))
-                .expiration(Date.from(exp))
+                .expiration(Date.from(expiration))
                 .claim("roles", List.copyOf(roles))
                 .signWith(key)
                 .compact();
     }
 
+    public String generateRefreshToken(String subject){
+        var now = Instant.now();
+        var expiration = now.plus(props.refreshExpirationDays(), ChronoUnit.DAYS);
+
+        return Jwts.builder()
+                .issuer(props.issuer())
+                .subject(subject)
+                .issuedAt(Date.from(now))
+                .expiration(Date.from(expiration))
+                .claim("type", "refresh")
+                .signWith(key)
+                .compact();
+    }
+
     public ParsedJwt parseAndValidate(String token) {
+
         Claims claims = Jwts.parser()
                 .verifyWith(key)
                 .build()
@@ -52,8 +68,8 @@ public class JwtService {
         @SuppressWarnings("unchecked")
         var roles = (List<String>) claims.getOrDefault("roles", List.of());
 
-        return new ParsedJwt(subject, roles);
-    }
+        var type = claims.get("type", String.class);
 
-    public record ParsedJwt(String subject, List<String> roles) {}
+        return new ParsedJwt(subject, roles, type);
+    }
 }

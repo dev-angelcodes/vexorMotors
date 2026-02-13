@@ -1,4 +1,4 @@
-package com.vexor.auth.api.record;
+package com.vexor.auth.domain.record;
 
 import com.vexor.auth.domain.enums.UserRole;
 import jakarta.validation.constraints.Email;

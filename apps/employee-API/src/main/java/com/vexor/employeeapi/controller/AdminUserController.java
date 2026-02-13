@@ -1,21 +1,18 @@
 package com.vexor.employeeapi.controller;
 
-import com.vexor.auth.api.record.CreateUserRecord;
+import com.vexor.auth.domain.record.AuthTokensRecord;
+import com.vexor.auth.domain.record.CreateUserRecord;
 import com.vexor.auth.api.service.IUserService;
 import com.vexor.auth.domain.dto.UserDto;
+import com.vexor.auth.domain.record.LoginUserRecord;
 import com.vexor.commoninfra.jsonapi.JsonApiObject;
-import com.vexor.commoninfra.jsonapi.JsonApiResponseBuilder;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Employees User controller", description = "Employee and Admin actions on users")
 @RestController
@@ -25,15 +22,16 @@ public class AdminUserController {
 
     private final IUserService userService;
 
+
+    @PostMapping("/login")
+    public AuthTokensRecord login(@RequestBody @Valid LoginUserRecord credential) {
+        return userService.loginUser(credential);
+    }
+
+
     @PostMapping("/register")
-    public ResponseEntity<JsonApiObject<UserDto>> register(@RequestBody @Valid CreateUserRecord recordUser) {
-        UserDto userDto = userService.createUser(recordUser);
-
-        var response = JsonApiResponseBuilder.<UserDto>builder()
-                .count(1)
-                .result(List.of(userDto))
-                .build();
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    @PreAuthorize("hasRole('ADMIN')") //Only ADMIN can register employees/clients (or another ADMIN)
+    public ResponseEntity<JsonApiObject<UserDto>> register(@RequestBody @Valid CreateUserRecord user) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(user));
     }
 }
